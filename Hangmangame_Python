@@ -1,0 +1,68 @@
+#Hangman Game - My First Python Program.
+#module importing
+import time
+import random
+from numpy import array
+
+#Welcoming
+name = input("Enter your Name? ")
+print ("Hello, " + name, "Lets play Hangman!")
+
+#Reading the file & get the random line
+file1 = open("Hangman_Data.txt","r+") 
+print ("Start guessing...")
+lines = [line.strip() for line in file1]
+randomline = random.choice(lines).split('|');
+
+#Setting the secret word and hint for the word
+secret_word = randomline[0]
+desc = randomline[1]
+#Making the word as list
+lst = [x.upper() for x in secret_word]
+#Dummy list
+guesslst = ["_" for x in secret_word];
+#Displaying the hint for the secret word
+print('Hint for the word : '+desc)
+print(guesslst)
+#Setting the life for the game
+life = 10
+successguess = ''
+#Getting the character from user and checking.
+while life > 0:
+    guess = input("Life left :"+ str(life) + ", now Guess a Character")
+    pos =0
+    success = 0
+    for char in secret_word:
+        if char.upper() == guess.upper():
+            successguess = successguess+char.upper()
+            guesslst[pos] = guess.upper()
+            pos+=1
+            success = 1
+        else:
+            if guesslst[pos] == '_':
+                guesslst[pos] = '_'
+            pos+=1
+#Dipalying the restuls            
+    a=''
+    for x in range(len(guesslst)):
+        a = a + guesslst[x] + ' '
+    print(a)
+#Logic to update the life/turns for the game
+    if success == 1:
+        life = life
+    else:
+        life-=1
+#condition to check all characters are matching or not    
+    if guesslst == lst:
+        print("Conguralation! You Won the Game!")
+        break
+#Ending the game if no turns left    
+    if life ==0: 
+        print("Better Luck Next time!Game Over!!")
+        a =''
+        for x in range(len(lst)):
+            a = a + lst[x] 
+        print('This is the Secret word ******* '+a+' *******')
+        break
+
+print ("Have a Nice day!!!...")
